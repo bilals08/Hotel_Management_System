@@ -1,0 +1,51 @@
+{% load static %}
+
+<html>
+<head>
+	<title>Login And Signup Form </title>
+	<link rel="stylesheet" href="{% static 'project.css' %}" >
+</head>
+
+<body> 
+	<div class ="hero">
+		<div class="form-box"> 
+			<div class="button-box">
+				<div id="btn"></div>
+                
+			</div>
+			<div class="social-icons">
+				<img src="{% static 'images/fb.png' %}">
+				<img src="{% static 'images/tw.png' %}">
+				<img src="{% static 'images/gmail.png' %}">
+			</div>
+                
+            <div id="login"  class="input-group"  >
+				{% csrf_token %}
+                        
+                    <h2 align="center" style="color:white;"><i> {{message}} </i></h2>
+                
+                    
+                    <button type="button" class= "submit-button" ><a href="{% url 'login' %}">Back</a> </button>
+            </div>
+			
+			
+			
+		</div>
+	
+		
+	</div>
+	<script>
+		var x = document.getElementById("login");
+		var y = document.getElementById("signUp");
+		var z=document.getElementById("btn");
+
+		function login(){
+			x.style.left="50px";
+			y.style.left="450px";
+			z.style.left="0px";
+		}
+		
+	</script>
+</body>
+
+</html>

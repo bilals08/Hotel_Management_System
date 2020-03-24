@@ -1,0 +1,125 @@
+{% load static %}
+
+<html>
+<head>
+	<title>Login And Signup Form </title>
+	<link rel="stylesheet" href="{% static 'project.css' %}" >
+</head>
+
+<body > 
+	
+	<div class ="hero">
+		<div class="form-box"> 
+			<div class="button-box">
+				<div id="btn"></div>
+				<button type="button" class= "toggle-btn" onclick=login() >Log In
+				</button>
+				<button type="button" class= "toggle-btn" onclick=signUp() >Sign Up
+				</button>
+			</div>
+			<div class="social-icons">
+				<img src="{% static 'images/fb.png' %}">
+				<img src="{% static 'images/tw.png' %}">
+				<img src="{% static 'images/gmail.png' %}">
+			</div>
+
+			<form id="login" action="loggedin" class="input-group" method="POST">
+				{% csrf_token %}
+				<input type="text" class="input-field" name ="login_id" placeholder="UserID, Email or PhoneNo"
+				required>
+				<input type="text" class="input-field" name ="login_pass" placeholder="Enter Password"
+				required>
+				<input type="checkbox" class="check-box"><span>Remember Password </span>
+				<button type="submit" class= "submit-button" >  Log In </button>
+			</form>
+			
+			<form id="byphone" class="input-group" method="POST" action="register">
+				{% csrf_token %}
+				
+				<input type="text" class="input-field" placeholder="User ID" name="signup_id"
+				required>
+				<input type="text" class="input-field" placeholder="Enter Password" name="signup_pass"
+				required>
+				<input type="email" class="input-field" placeholder="Email ID(Optional)" name="signup_email"
+				> 
+
+				<input type="number" class="input-field" placeholder="Phone No" name="signup_contact"
+				required> 
+
+				<input type="checkbox" class="check-box" name="terms"><span>I agree to the terms. </span>
+				<button type="submit" class= "submit-button">Sign up </button>
+			</form>
+
+			<form id="byemail" class="input-group" method="POST" action="register">
+				{% csrf_token %}
+				
+				<input type="text" class="input-field" placeholder="User ID" name="signup_id"
+				required>
+				<input type="text" class="input-field" placeholder="Enter Password" name="signup_pass"
+				required>
+				<input type="email" class="input-field" placeholder="Email ID" name="signup_email"
+				required> 
+
+				<input type="number" class="input-field" placeholder="Phone No(optional)" name="signup_contact"
+				> 
+
+				<input type="checkbox" class="check-box" name="terms"><span>I agree to the terms. </span>
+				<button type="submit" class= "submit-button">Sign up </button>
+			</form>
+			
+			<div id="signButtons"  class="input-group">
+				<button type="button" class= "submit-button" onclick=signUpByMail() >Login Using Email Id.
+				</button>
+				<br><br>
+				<button type="button" class= "submit-button" onclick=signUpByPhone() >Login Using Phone No.
+				</button>
+			</div>
+			
+		</div>
+	
+		
+	</div>
+	<script>
+		var x = document.getElementById("login");
+		var z=document.getElementById("btn");
+		var signButtons=document.getElementById("signButtons");
+		var byphone=document.getElementById("byphone");
+		var byemail=document.getElementById("byemail");
+
+		login()
+		
+		function signUp(){
+
+			x.style.left="-400px";
+			byemail.style.left="-400px";
+			byphone.style.left="-400px";
+			z.style.left="110px";
+			signButtons.style.left="50px"
+
+		}
+		function login(){
+			x.style.left="50px";
+			byemail.style.left="-400px";
+			byphone.style.left="-400px";
+			z.style.left="0px";
+			signButtons.style.left="-1000px"
+		}
+		function signUpByMail(){
+			x.style.left="-500px";
+			byemail.style.left="50px";
+			byphone.style.left="-400px";
+			z.style.left="110px";
+			signButtons.style.left="-400px"
+		}
+		function signUpByPhone(){
+			x.style.left="-500px";
+			byemail.style.left="-500px";
+			byphone.style.left="50px";
+			z.style.left="110px";
+			signButtons.style.left="-400px"
+		}
+		
+	</script>
+</body>
+
+</html>

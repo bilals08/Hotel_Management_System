@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="testingStyle.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>
+
+<div class="navbar">
+ <a href="#news">Home</a>
+
+  <div class="dropdown">
+    <button class="dropbtn">Services 
+      <i class="fa fa-chevron-circle-down"></i>
+    </button>
+    <div class="dropdown-content">
+      <a href="#" >Add Service</a>
+      <a href="#">Update Service</a>
+      <a href="#">Remove Service</a>
+    </div>
+  </div> 
+
+  
+  
+ 
+  
+  <div class="dropdown">
+    <button class="dropbtn">Rooms 
+      <i class="fa fa-bed"></i>
+    </button>
+    <div class="dropdown-content">
+      <a href="#" onclick=RoomForm()>Add Room</a>
+      <a href="#" onclick=UpdateRoomForm()>Update Room</a>
+      <a href="#" onclick=RemoveRoomForm()>Remove Room</a>
+    </div>
+  </div> 
+</div>
+	<script>
+	function RoomForm()
+	{
+	location.replace("Addroomform.html")
+	}
+	function RemoveRoomForm()
+	{
+	location.replace("removeroomform.html")
+	}
+	function UpdateRoomForm()
+	{
+	location.replace("updateroomform.html")
+	}
+	</script>
+
+</body>
+</html>

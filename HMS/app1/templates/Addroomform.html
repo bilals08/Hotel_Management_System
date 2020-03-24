@@ -1,0 +1,35 @@
+{% load static %}
+
+<html>
+<head>
+<link rel="stylesheet" href="{% static 'Addroomform.css' %}">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+</head>
+
+<body>
+<div>
+	<h1>Add Room </h1>
+  <form method="POST" action="addroom">
+    {% csrf_token %}
+    <label for="Rno">Room No</label><br>
+    <input type="text" id="RoomNo" name="RoomNo" placeholder="Enter Room No"><br>
+
+    <label for="capacity">Capacity</label><br>
+    <input type="number" id="Capacity" name="Capacity" placeholder="No of people"><br>
+
+    <label for="Floor No">Floor No</label><br>
+    <select id="FloorNo" name="FloorNo">
+      <option value=1>First</option>
+      <option value=2>Second</option>
+      <option value=3>third</option>
+    </select><br>
+    <h2 ><i> {{message}} </i></h2>
+    <input type="submit" value="Submit">
+	
+  </form>
+</a><button  type ="submit" class="back-button" ><a href="{% url 'home' %}">Back To Home</a></button>
+</div>
+<script>     
+</script> 
+</body>
+</html>

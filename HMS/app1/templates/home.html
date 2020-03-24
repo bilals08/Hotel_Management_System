@@ -1,0 +1,36 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+<title> Home </title>
+<link rel="stylesheet" href=" {% static 'homestyle.css' %}">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+	<body >
+		
+		<div class="menu-bar">
+			<ul>
+				<li class="active" > <a href="#"> <i class="fa fa-home" ></i>Home  </a></li>
+				<li >
+					<a href="#"><i class="fa fa-bed" ></i> Rooms </a>
+					<div class="sub-menu-1">
+						<ul>
+							<li><a href="{% url 'addroom' %}">Add Room</a></li>
+							<li><a href="{% url 'updateroom' %}">Update Room</a></li>
+							<li><a href="{% url 'removeroom' %}">Remove Room</a></li>
+						</ul>
+					</div>
+					
+				</li>
+				<li><a href="#"> <i class="fa fa-bars" ></i>Services </a></li>
+				<li><a href="{% url 'logout' %}"><i ></i> Log Out </a></li>
+				
+			
+			</ul>
+		</div>
+	<script>
+
+	</script>
+	</body>
+</html>
