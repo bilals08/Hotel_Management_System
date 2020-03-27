@@ -4,9 +4,10 @@ from django.template import loader
 from django.contrib.auth import authenticate, login
 from django.template import RequestContext
 from django.shortcuts import redirect
-from .models import UserAccount, Rooms
+from .models import UserAccount, Rooms, Services, Booking
 
 # Create your views here.
+    
 def index(request):
     return redirect('login')
 
@@ -151,4 +152,191 @@ def UpdateRoom(request):
         return render(request, 'updateroomform.html',{'message': message })
     
     return render(request,'updateroomform.html')
+
+def addService(request):
+    if not request.session.get('id'):
+        return redirect('login')
+    if request.POST:
+        service=request.POST.dict() #Extracting Data from Form
+        sId=service.get('serviceId')
+        sType=service.get('serviceType')
+        sDesc=service.get('serviceDesc')
         
+        if len(sId)<=1: #Checking if ID is correct
+            message="Please Enter Correct Records."
+            return render(request, 'addservices.html',{'message': message })
+        if Services.objects.filter(pk=sId): #chech if already exist
+            message="Service Already Exist."
+            return render(request, 'addservices.html',{'message': message })
+        
+        db_Object=Services(service_id=sId, service_type=sType, service_desc=sDesc)
+        db_Object.save()
+        message="Service Added."
+        return render(request, 'addservices.html',{'message': message })
+            
+    else:
+        return render(request,'addservices.html')
+    
+def UpdateService(request):
+    if not request.session.get('id'):
+        return redirect('login')
+    if request.POST:
+        service=request.POST.dict() #Extracting Data from Form
+        sId=service.get('serviceId')
+        sType=service.get('serviceType')
+        sDesc=service.get('serviceDesc')
+        
+        if not Services.objects.filter(pk=sId): #chech if already exist
+            message="Service Doesn't Exist."
+            return render(request, 'updateservice.html',{'message': message })
+        
+        s=Services.objects.get(pk=sId)
+        s.service_type=sType
+        s.service_desc=sDesc
+        s.save()
+        message="Service Updated."
+        return render(request, 'updateservice.html',{'message': message })
+    else:
+        return render(request, 'updateservice.html')
+        
+def RemoveService(request):
+    if not request.session.get('id'):
+        return redirect('login')
+    if request.POST:
+        service=request.POST.dict() #Extracting Data from Form
+        sId=service.get('serviceId')
+        
+        if Services.objects.filter(service_id=sId):
+            Services.objects.filter(service_id=sId).delete()
+            message="Service Deleted."
+            return render(request, 'removeservice.html',{'message': message })
+        else:
+            message="Service Doesn't Exist."
+            return render(request, 'removeservice.html',{'message': message })
+    else:
+        return render(request, 'removeservice.html') 
+    
+    
+def MakeBooking(request):
+    if not request.session.get('id'):
+        return redirect('login')
+    
+    if request.POST:
+        book=request.POST.dict()
+        name=book.get('name')
+        date=book.get('checkin')
+        cnic=book.get('cnic')
+        phone=book.get('phone')
+        email=book.get('emai')
+        desc=book.get('desc')
+        
+        message="" #Conditions to get valid values
+        if cnic and len(cnic)<13:
+            message="Invalid CNIC NO.(Length Must be 13 Digits)"
+        elif len(phone)<11:
+            message="Invalid Phone No.(Length Must be 11 Digits)"
+        if message:
+            return render(request, 'makebooking.html',{'message': message })
+        
+        db_Object=Booking(name=name,checkin=date,cnic=cnic,phone=phone,email=email,desc=desc ) #Saving Data
+        db_Object.save()
+        bid=db_Object.id
+        
+        rooms=Rooms.objects.all().filter(booking=None).values_list('room_id', flat=True)
+        return render(request, 'selectroom.html',{'message': message, 'bid':bid, 'Rooms':rooms })
+    else:
+         return render(request, 'makebooking.html')
+        
+def MakeBooking1(request):
+    if not request.session.get('id'):
+        return redirect('login')
+    
+    if request.POST:
+        rooms=request.POST.getlist('Room')
+        bookN=request.POST.dict().get('bid')
+         
+        
+        message=""
+        if not bookN:
+            message="Booking Id Error"
+            return render(request, 'makebooking.html')
+        elif len(rooms)<1:
+            message="Please Select At Least 1 Room."
+       
+        bookNo=Booking.objects.get(pk=bookN) #Retrieving booking object
+        
+        if message:
+            rooms=Rooms.objects.all().filter(booking=None).values_list('room_id', flat=True)
+            return render(request, 'selectroom.html',{'message': message, 'bid':bookN, 'Rooms':rooms })
+            
+        for i in range(len(rooms)): #Assigning the book object to Room
+            obj=Rooms.objects.get(pk=rooms[i])
+            obj.booking=bookNo
+            obj.save()
+            
+            services=Services.objects.all().values_list('service_id', flat=True)
+            return render(request, 'selectservices.html',{'message': message, 'bid':bookN, 'Services':services })
+            
+    else:
+        return redirect('makebooking')
+    
+
+def MakeBooking2(request):
+    if not request.session.get('id'):
+        return redirect('login')
+
+    if request.POST:
+        service=request.POST.getlist('Service')
+        bookN=request.POST.dict().get('bid')
+        
+        
+        if not bookN:
+            message="Booking Id Error"
+            return redirect('makebooking')
+        
+        bookNo=Booking.objects.get(pk=bookN) #Retrieving booking object
+        
+        for i in range(len(service)):
+            bookNo.services.add(service[i])
+            
+        bookNo.save()
+        message="Booking Added."
+        return render(request, 'makebookingmessage.html',{'message': message, })
+    else:
+        return redirect('makebooking')
+    
+def ViewRooms(request):
+    if not request.session.get('id'):
+        return redirect('login')
+    
+    if request.POST:
+        roomid=request.POST.dict().get('room')
+        getroom=Rooms.objects.get(pk=roomid)
+        
+        status=""
+        if getroom.room_id.startswith('A'):
+            status="Executive"
+        elif getroom.room_id.startswith('B'):
+            status="Delux"
+        else:
+            status="classic"
+        
+        return render(request, 'roomdetail.html',{'roomid': getroom.room_id,'capacity':getroom.capacity,'floor':getroom.floor, 'status':status})
+        
+    else:
+        rooms=Rooms.objects.all().values_list('room_id', flat=True)
+        return render(request, 'viewrooms.html',{'Rooms': rooms})
+    
+def ViewServices(request):
+    if not request.session.get('id'):
+        return redirect('login')
+    
+    if request.POST:
+        serviceid=request.POST.dict().get('service')
+        getservice=Services.objects.get(pk=serviceid)
+        
+        return render(request, 'servicedetail.html',{'id': getservice.service_id,'type':getservice.service_type,'desc':getservice.service_desc})
+        
+    else:
+        services=Services.objects.all().values_list('service_id', flat=True)
+        return render(request, 'viewservices.html',{'Services': services})

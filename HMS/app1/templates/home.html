@@ -19,11 +19,30 @@
 							<li><a href="{% url 'addroom' %}">Add Room</a></li>
 							<li><a href="{% url 'updateroom' %}">Update Room</a></li>
 							<li><a href="{% url 'removeroom' %}">Remove Room</a></li>
+							<li><a href="{% url 'viewrooms' %}">View Room</a></li>
 						</ul>
 					</div>
 					
 				</li>
-				<li><a href="#"> <i class="fa fa-bars" ></i>Services </a></li>
+				<li><a href="#"> <i class="fa fa-bars" ></i>Services </a>
+					<div class="sub-menu-1">
+						<ul>
+							<li><a href="{% url 'addservice' %}">Add Service</a></li>
+							<li><a href="{% url 'updateservice' %}">Update Service</a></li>
+							<li><a href="{% url 'removeservice' %}">Remove Service</a></li>
+							<li><a href="{% url 'viewservices' %}">View Service</a></li>
+						</ul>
+					</div>
+				</li>
+
+				<li><a href="#"> Bookings </a>
+					<div class="sub-menu-1">
+						<ul>
+							<li><a href="{% url 'makebooking' %}">Make Booking</a></li>
+							<li><a href="{% url 'updateservice' %}">View Bookings</a></li>
+						</ul>
+					</div>
+				</li>
 				<li><a href="{% url 'logout' %}"><i ></i> Log Out </a></li>
 				
 			

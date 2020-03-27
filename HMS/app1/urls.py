@@ -14,4 +14,15 @@ urlpatterns=[
     path('removeroom',views.removeroom, name='removeroom'),
     path('logout',views.logout, name='logout'),
     path('updateroom',views.UpdateRoom, name='updateroom'),
+    
+    path('addservice',views.addService, name='addservice'),
+    path('updateservice',views.UpdateService, name='updateservice'),
+    path('removeservice',views.RemoveService, name='removeservice'),
+    
+    path('makebooking',views.MakeBooking, name='makebooking'),
+    path('makebooking1',views.MakeBooking1, name='makebooking1'),
+    path('makebooking2',views.MakeBooking2, name='makebooking2'),
+    
+    path('viewrooms',views.ViewRooms, name='viewrooms'),
+    path('viewservices',views.ViewServices, name='viewservices'),
 ]

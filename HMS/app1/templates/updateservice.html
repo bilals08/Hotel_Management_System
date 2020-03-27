@@ -1,0 +1,33 @@
+{% load static%}
+<html>
+<head>
+<link rel="stylesheet" href="{% static 'services.css' %}">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+</head>
+
+<body>
+<div>
+	<h1>Update Service </h1>
+  <form method='POST'>
+    {% csrf_token %}
+     <label for="Sno">Service Id</label><br>
+    <input type="text" id="Sno" name="serviceId" placeholder="Enter Service ID"><br>
+	
+    <label for="Service Type">Select Service Type</label><br>
+    <select id="service type" name="serviceType">
+      <option value="Food">Food Service</option>
+      <option value="Laundry">Laundry Service</option>
+      <option value="Spa">Spa</option>
+    </select><br>
+	
+	
+	<label for="serviceDesc">Update Description</label><br>
+    <input type="text" id="description" name="serviceDesc" placeholder="Update Description"><br>
+    <h2 ><i> {{message}} </i></h2>
+    <input type="submit" value="Submit">
+	
+  </form>
+</a><button class="back-button" ><a href="{% url 'home' %}">Back To Home</a></button>
+</div> 
+</body>
+</html>

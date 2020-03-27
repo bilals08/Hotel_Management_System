@@ -1,0 +1,24 @@
+{% load static %}
+<html>
+<head>
+<link rel="stylesheet" href="{% static 'services.css' %}">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+</head>
+
+<body>
+<div>
+	<h1>Remove Service </h1>
+  <form method='POST'>
+    {% csrf_token %}
+    <label for="sID">Service ID</label><br>
+    <input type="text" id="serviceId" name="serviceId" placeholder="Enter Service ID"><br>
+
+    <h2 ><i> {{message}} </i></h2> 
+  
+    <input type="submit" value="Submit">
+	
+  </form>
+</a><button class="back-button" ><a href="{% url 'home' %}">Back To Home</a></button>
+</div>
+</body>
+</html>

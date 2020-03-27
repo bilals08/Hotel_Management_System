@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html >
+
+<head>
+	<link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
+	<link type="text/css" rel="stylesheet" href="{% static 'bootstrap.min.css' %}" />
+	<link type="text/css" rel="stylesheet" href="{% static 'viewroom.css' %}" />
+</head>
+
+<body>
+					
+					<div class="booking-form">
+						<div class="form-header">
+							<h1>Services List</h1>
+							<p>Here is a list of All Services available</p>
+						</div>
+						
+								
+						<div style="overflow-y:scroll;height:400px;">
+							{% for service in Services %}
+							<div class="dropdown">
+							<button class="dropbtn">{{service}}</button>
+								<div class="dropdown-content">
+									<form method="POST">
+										{%csrf_token%}
+									<input type="hidden" name="service" value={{service}}>
+									 <button class="dropdown-content" type="submit">Details</button>
+									</form>
+								</div>	
+						
+							</div> <br>	
+							{% endfor %}
+					</div>
+								
+	
+	</div>
+	<div class="form-btn">
+		<button class="submit-btn" ><a href="{% url 'home' %}">Back To Home</a></button>
+	</div>
+
+
+</body>
+</html>
+	
+
+</body>
+
+</html>

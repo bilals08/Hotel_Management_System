@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
+<style>
+body{
+	position: relative;
+	height: 120vh;
+	background-image: url('static/images/book3.jpeg');
+}
+
+h2{
+font-size:30px;
+
+text-align:center
+
+
+}
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 500px;
+  margin: auto;
+  text-align: center;
+  font-family: arial;
+  height:650px;
+  background: rgba(255, 255, 255, 0.7);
+  
+
+}
+
+.title {
+  color: black;
+  font-size: 18px;
+}
+
+button {
+ margin-left:0;
+	 margin-top:20px;
+	color: #fff;
+	background-color: rgb(255,127,80);
+	font-weight: 700;
+	height: 60px;
+	padding: 10px 30px;
+	width: 35%;
+	border-radius: 40px;
+	border: none;
+	text-transform: uppercase;
+	font-size: 16px;
+	letter-spacing: 1.3px;
+	-webkit-transition: 0.2s all;
+	transition: 0.2s all;
+}
+
+
+
+button:hover, a:hover {
+  background-color:red;
+}
+</style>
+</head>
+<body>
+
+<h2 >Room Details</h2>
+
+<div class="card">
+  <img src="/static/images/{{status}}.jpg" height="300" width="500">
+  <h1>{{status}}</h1>
+  <p class="title">Room ID:{{roomid}} <br><br>
+				   Capacity : {{capacity}}-Persons <br><br>
+				   Location: {{floor}} Floor</p>
+  <p><button ><a href="{% url 'viewrooms' %}">Back</a></button></p>
+
+  
+  
+</div>
+
+</body>
+</html>

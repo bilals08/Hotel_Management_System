@@ -4,12 +4,15 @@
 	box-sizing: border-box;
 	
 }
-body {
+body 
+{
+		height:100%;
+		width:100%;
 		background-image: url('/static/images/hotel1.jpg');
 		background-size: cover;
 		background-position:centre;
-	
 		font-family: sans-serif;
+		position: absolute
 }
 .menu-bar{
 	background: transparent;

@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html >
+
+<head>
+	
+	<link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
+	<link type="text/css" rel="stylesheet" href="{% static 'bootstrap.min.css' %}"  />
+	<link type="text/css" rel="stylesheet" href="{% static 'style.css' %}" />
+
+
+</head>
+
+<body>
+	<div id="booking" class="section">
+		<div class="section-center">
+			<div class="container">
+				<div class="row">
+					<div class="booking-form">
+						<div class="form-header">
+							<h1>Make your reservation</h1>
+						</div>
+						<form method="POST">
+							{% csrf_token %}
+							<div class="form-group">
+								<input class="form-control" type="text" placeholder="Customer Name" name="name" required>
+							</div>
+							
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<input class="form-control" type="date" name="checkin" required>
+										<span class="form-label">Check In</span>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<input class="form-control" type="text" name="cnic" placeholder="Enter your CNIC">
+										<span class="form-label">Cnic</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<input class="form-control" type="email" name="email" placeholder="Enter your Email">
+										<span class="form-label">Email</span>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<input class="form-control" type="tel" name="phone" placeholder="Enter you Phone" required>
+										<span class="form-label">Phone</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<input class="form-control" type="text" name="desc" placeholder="Description">
+							</div>
+							<h2 ><i> {{message}} </i></h2>
+
+							<div class="form-btn">
+								<button class="submit-btn"type="submit"> Book Now</button>
+							</div>
+						</form>
+						<br><button class="submit-btn"type="button"><a href="{% url 'home' %}">Back To Home</a></button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
+
+</body>
+</html>

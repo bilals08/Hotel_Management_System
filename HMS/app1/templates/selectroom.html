@@ -1,0 +1,46 @@
+{% load static%}
+<!DOCTYPE html>
+<html >
+
+<head>
+	
+	<link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
+	<link type="text/css" rel="stylesheet" href="{% static 'bootstrap.min.css' %}" />
+	<link type="text/css" rel="stylesheet" href="{% static 'style1.css' %}" />
+
+
+</head>
+
+<body>
+		
+				<div class="booking-form">
+						<div class="form-header">
+							<h1>Select Room For Booking</h1>
+						</div>
+						
+						<form action="{% url 'makebooking1' %}" method="POST">
+							{% csrf_token%}
+							<input type="hidden" name="bid" value={{bid}} >
+							<div style="overflow-y:scroll;height:400px;">
+								<div class="centre">
+									{% for room in Rooms%}
+									 <input type="checkbox" name="Room" value="{{room}}"><label>{{room}}</label><br>
+									{% endfor %}	
+								</div>
+							</div>
+							<h2 ><i> {{message}} </i></h2> 
+						</div>
+						
+							<div class="form-btn">
+								<button class="submit-btn">Submit</button>
+							</div>
+								
+						</form>
+						<div class="form-btn">
+							<button class="submit-btn" type="button"><a href="{% url 'home' %}">Back To Home</a></button>
+						</div>
+						
+						
+					
+</body>
+</html>
