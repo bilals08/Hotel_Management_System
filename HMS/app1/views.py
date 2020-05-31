@@ -163,7 +163,7 @@ def addService(request):
         sId=service.get('serviceId')
         sType=service.get('serviceType')
         sDesc=service.get('serviceDesc')
-        Price=room.get('Price')
+        Price=service.get('Price')
         
         if len(sId)<=1: #Checking if ID is correct
             message="Please Enter Correct Records."
@@ -486,7 +486,7 @@ def ViewBookings(request):
             
   
                 
-        return render(request, 'servicedetail.html',{'id': getservice.service_id,'type':getservice.service_type,'desc':getservice.service_desc})
+
         
     else:
         bookings=Booking.objects.filter(isActive=True).values_list('id', flat=True)
