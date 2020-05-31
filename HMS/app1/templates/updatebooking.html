@@ -1,0 +1,106 @@
+{% load static %}
+<!DOCTYPE html>
+<html >
+
+<head>
+	
+	<link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
+	<link type="text/css" rel="stylesheet" href="{% static 'bootstrap.min.css' %}"  />
+	<link type="text/css" rel="stylesheet" href="{% static 'style.css' %}" />
+
+
+</head>
+
+<body>
+	<div id="booking" class="section">
+		<div class="section-center">
+			<div class="container">
+				<div class="row">
+					<div class="booking-form">
+						<div class="form-header">
+							<h1>Update Booking</h1>
+						</div>
+						<form method="POST">
+							{% csrf_token %}
+							<div class="form-group">
+								<input class="form-control" type="text" placeholder="Customer Name" name="name" value={{booking.name}} minlength="2" maxlength="30" required>
+							</div>
+							
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<input class="form-control" type="date" name="checkin" value="{{booking.checkin}}"  min="2015-01-01" max="2090-01-01" required>
+										<span class="form-label">Check In</span>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<input class="form-control" type="text" name="cnic" value="{{booking.cnic}}" placeholder="Enter your CNIC"  minlength="13" maxlength="15">
+										<span class="form-label">Cnic</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<input class="form-control" type="email" name="email" value="{{booking.email}}" placeholder="Enter your Email" minlength="5">
+										<span class="form-label">Email</span>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<input class="form-control" type="tel" name="phone" value="{{booking.phone}}"placeholder="Enter you Phone" minlength="11" maxlength="30" required>
+										<span class="form-label">Phone</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<input class="form-control" type="text" name="desc" value="{{booking.desc}}" placeholder="Description">
+							</div>
+
+							<h1>Rooms: </h1>
+							
+							<h2>
+							{% for room in RoomsAll%}
+								
+								{% if room in Rooms %}
+									<input type="checkbox" name="Room" value="{{room}}" checked><label>{{room}}</label>
+								{% else %}
+									<input type="checkbox" name="Room" value="{{room}}"><label>{{room}}</label>
+								{% endif %}
+
+							{% endfor %}
+							</h2>
+
+							<h1> Services: </h1>
+							
+							<h2>
+							{% for service in ServicesAll%}
+							
+								{% if service in Services %}
+									<input type="checkbox" name="Service" value="{{service}}" checked><label>{{service}}</label>
+								{% else %}
+									<input type="checkbox" name="Service" value="{{service}}"><label>{{service}}</label>
+								{% endif %}
+							{% endfor %}
+							</h2>
+
+							<h2 ><i> {{message}} </i></h2>
+
+							<div class="form-btn">
+								<button class="submit-btn" name="UBA" value="{{booking.id}}" type="submit"> Update</button>
+							</div>
+						</form>
+						<br><button class="submit-btn"type="button"><a href="{% url 'home' %}">Back</a></button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
+
+</body>
+</html>

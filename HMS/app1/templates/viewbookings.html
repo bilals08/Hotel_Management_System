@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html >
+
+<head>
+	<link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
+	<link type="text/css" rel="stylesheet" href="{% static 'bootstrap.min.css' %}" />
+	<link type="text/css" rel="stylesheet" href="{% static 'viewroom.css' %}" />
+</head>
+
+<body>
+			
+					<div class="booking-form">
+						<div class="form-header">
+							<h1>Booking List</h1>
+							<p>Here is a list of All Bookings Done</p>
+						</div>
+						<form method="POST" >
+							{% csrf_token%}
+							<table>
+							<tr>
+								<td><input type="text" name="SearchText" placeholder="Search e.g 2019-08-98, Hassan"  style="width:250px; padding:5px; margin-right: 5px;" required></td>
+								<td><select id="Option" name="Option" style="padding:7px;">
+								  <option value="SBN">Search By Name</option>
+								  <option value="SBD">Search BY Date</option>
+								</select><br></td>
+								<td> <input type="submit"  name="Search" placeholder="Search" style="width:100px; padding:5px;  background-color:rgb(255,127,80); color:cornsilk; "></td>
+								{% if Searched%}
+								<td><button style="background-color: red; color:cornsilk"><a style="color:cornsilk" href="{% url 'viewbookings' %}">clear</a></button></td>
+								{% endif %}
+							</tr>
+							{% if Searched%}
+							<tr>
+							<td><h3 style="color: black; font-family:'Times New Roman', Times, serif; font-style: italic;">Search Results: {{Query}}</h3></td>
+							</tr>
+							{% endif %}	
+							</table>
+						</form><br><br>
+						<div  style="overflow-y:scroll;height:400px;">	
+							<table class="tb"  >
+								<tr>
+								{% for booking in bookings %}
+								
+								{% if forloop.counter0|divisibleby:4 %}
+									</tr>
+									<tr>
+								{% endif %}
+								
+									<td>
+										<div class="dropdown">
+										<button  class="dropbtn">Booking: {{booking}}</button>
+											<form method="POST">
+												{%csrf_token%}
+											<div  class="dropdown-content">
+												<button  name="VB" value={{booking}} type="submit"  >View Booking Details</button>
+												<button  name="UB" type="submit" value="{{booking}}"  >Update Booking Details</button>
+												<button  name="MP" value={{booking}} type="submit" >Make Payment</button>
+												<button  name="MC" value={{booking}} type="submit" >Mark Check-out</button>
+												<button  name="DropB" value={{booking}} type="submit" >Drop Booking</button>
+												<button  name="DB" value={{booking}} type="submit" >Delete Booking</button>
+											</div>
+											</form>
+										</div>
+									</td>
+
+									
+
+
+								{% endfor %}
+								
+								
+ 
+</table>
+					
+							
+					
+			</div>
+			</div>
+			<div class="form-btn">
+				<button class="submit-btn" ><a href="{% url 'home' %}">Back To Home</a></button>
+			</div>
+</body>
+</html>

@@ -1,0 +1,128 @@
+body{
+	position: relative;
+	height: 120vh;
+	background-image: url('/static/images/book3.jpeg');
+	background-position:center;
+	
+}
+
+.container {
+	position: absolute;
+	top: 50%;
+	left: 0;
+	right: 0;
+	
+	-webkit-transform: translateY(-50%);
+	transform: translateY(-50%);
+}
+
+#container {
+	font-family: sans-serif;
+}
+
+
+
+.container .pay-btn{
+	color: #fff;
+	background-color: rgb(255,127,80);
+	font-weight: 700;
+	height: 40px;
+	padding: 10px 30px;
+	width: 30%;
+	border-radius: 40px;
+	border: none;
+	text-transform: uppercase;
+	font-size: 16px;
+	letter-spacing: 1.3px;
+	-webkit-transition: 0.2s all;
+	transition: 0.2s all;
+	
+	position:absolute;
+	right:20px;
+	bottom:10px;
+	
+   
+}
+
+
+.container .pay-btn:hover{
+	background-color:red;
+}
+.container .pay-btn1{
+	color: #fff;
+	background-color: rgb(255,127,80);
+	font-weight: 700;
+	height: 40px;
+	padding: 10px 30px;
+	width: 30%;
+	border-radius: 40px;
+	border: none;
+	text-transform: uppercase;
+	font-size: 16px;
+	letter-spacing: 1.3px;
+	-webkit-transition: 0.2s all;
+	transition: 0.2s all;
+	
+	position:absolute;
+	left:20px;
+	bottom:10px;
+	
+   
+}
+
+
+.container .pay-btn1:hover{
+	background-color:red;
+}
+.container .form-popup {
+  display: none;
+  position: absolute;
+  left : 25%;
+  bottom: 40%;
+  right: 30%;
+  background: rgba(0, 0, 0, .7);
+  border-radius:10px
+  
+ 
+}
+.container .form-popup .btn{
+	color: #fff;
+	background-color: rgb(255,127,80);
+	font-weight: 700;
+	height: 40px;
+	padding: 10px 30px;
+	width: 100%;
+	border-radius: 40px;
+	border: none;
+	text-transform: uppercase;
+	font-size: 16px;
+	letter-spacing: 1.3px;
+	-webkit-transition: 0.2s all;
+	transition: 0.2s all;
+	
+	
+	
+   
+}
+
+
+.container .form-popup .btn hover{
+	background-color:red;
+}
+.container .form-popup label {
+ font-size:20px;
+}
+.container .form-popup input[type=number] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+  border-radius:10px;
+}
+
+
+.container .form-popup input[type=number]:focus {
+  background-color: #ddd;
+  outline: none;
+}

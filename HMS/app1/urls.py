@@ -25,4 +25,9 @@ urlpatterns=[
     
     path('viewrooms',views.ViewRooms, name='viewrooms'),
     path('viewservices',views.ViewServices, name='viewservices'),
+    path('viewbookings',views.ViewBookings, name='viewbookings'),
+    
+    path('payment',views._Payment, name='payment'),
+    path('bookingreport',views.BookingReport, name='bookingreport'),
+    path('financereport',views.FinanceReport, name='financereport'),
 ]

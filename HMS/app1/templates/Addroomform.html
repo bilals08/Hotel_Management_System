@@ -13,10 +13,10 @@
   <form method="POST" action="addroom">
     {% csrf_token %}
     <label for="Rno">Room No</label><br>
-    <input type="text" id="RoomNo" name="RoomNo" placeholder="Enter Room No"><br>
+    <input type="text" id="RoomNo" name="RoomNo" placeholder="Enter Room No" minlength="2" maxlength="10" required><br>
 
     <label for="capacity">Capacity</label><br>
-    <input type="number" id="Capacity" name="Capacity" placeholder="No of people"><br>
+    <input type="number" id="Capacity" name="Capacity" placeholder="No of people" min="1" max="6" required><br>
 
     <label for="Floor No">Floor No</label><br>
     <select id="FloorNo" name="FloorNo">
@@ -24,6 +24,10 @@
       <option value="Second">Second</option>
       <option value="Third">third</option>
     </select><br>
+    
+    <label for="price">Price</label><br>
+    <input type="number" name="Price" id="Price" step="0.01" min="0" max="100000" required><br>
+
     <h2 ><i> {{message}} </i></h2>
     <input type="submit" value="Submit">
 	

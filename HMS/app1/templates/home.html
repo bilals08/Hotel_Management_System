@@ -39,7 +39,16 @@
 					<div class="sub-menu-1">
 						<ul>
 							<li><a href="{% url 'makebooking' %}">Make Booking</a></li>
-							<li><a href="{% url 'updateservice' %}">View Bookings</a></li>
+							<li><a href="{% url 'viewbookings' %}">View Bookings</a></li>
+						</ul>
+					</div>
+				</li>
+
+				<li><a href="#"> Reports </a>
+					<div class="sub-menu-1">
+						<ul>
+							<li><a  href="{% url 'bookingreport' %}">Booking Report</a></li>
+							<li><a  href="{% url 'financereport' %}">Finance Report</a></li>
 						</ul>
 					</div>
 				</li>

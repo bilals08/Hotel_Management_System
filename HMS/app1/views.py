@@ -4,7 +4,8 @@ from django.template import loader
 from django.contrib.auth import authenticate, login
 from django.template import RequestContext
 from django.shortcuts import redirect
-from .models import UserAccount, Rooms, Services, Booking
+from .models import UserAccount, Rooms, Services, Booking, PayByCard, Payment
+from datetime import *
 
 # Create your views here.
     
@@ -97,7 +98,8 @@ def addroom(request):
             roomId=room.get('RoomNo')
             capacity=room.get('Capacity')
             floor=room.get('FloorNo')
-            
+            Price=room.get('Price')
+
             if len(roomId)<=1:
                 message="Please Enter Correct Records."
                 return render(request, 'Addroomform.html',{'message': message })
@@ -105,7 +107,7 @@ def addroom(request):
                 message="Room Already Exist."
                 return render(request, 'Addroomform.html',{'message': message })
             
-            db_Object=Rooms(room_id=roomId, capacity=capacity, floor=floor)
+            db_Object=Rooms(room_id=roomId, capacity=capacity, floor=floor, price=Price)
             db_Object.save()
             message="Room Added."
             return render(request, 'Addroomform.html',{'message': message })
@@ -161,6 +163,7 @@ def addService(request):
         sId=service.get('serviceId')
         sType=service.get('serviceType')
         sDesc=service.get('serviceDesc')
+        Price=room.get('Price')
         
         if len(sId)<=1: #Checking if ID is correct
             message="Please Enter Correct Records."
@@ -169,7 +172,7 @@ def addService(request):
             message="Service Already Exist."
             return render(request, 'addservices.html',{'message': message })
         
-        db_Object=Services(service_id=sId, service_type=sType, service_desc=sDesc)
+        db_Object=Services(service_id=sId, service_type=sType, service_desc=sDesc, price=Price)
         db_Object.save()
         message="Service Added."
         return render(request, 'addservices.html',{'message': message })
@@ -227,7 +230,7 @@ def MakeBooking(request):
         date=book.get('checkin')
         cnic=book.get('cnic')
         phone=book.get('phone')
-        email=book.get('emai')
+        email=book.get('email')
         desc=book.get('desc')
         
         message="" #Conditions to get valid values
@@ -268,14 +271,14 @@ def MakeBooking1(request):
         if message:
             rooms=Rooms.objects.all().filter(booking=None).values_list('room_id', flat=True)
             return render(request, 'selectroom.html',{'message': message, 'bid':bookN, 'Rooms':rooms })
-            
+
         for i in range(len(rooms)): #Assigning the book object to Room
             obj=Rooms.objects.get(pk=rooms[i])
             obj.booking=bookNo
             obj.save()
             
-            services=Services.objects.all().values_list('service_id', flat=True)
-            return render(request, 'selectservices.html',{'message': message, 'bid':bookN, 'Services':services })
+        services=Services.objects.all().values_list('service_id', flat=True)
+        return render(request, 'selectservices.html',{'message': message, 'bid':bookN, 'Services':services })
             
     else:
         return redirect('makebooking')
@@ -298,7 +301,7 @@ def MakeBooking2(request):
         
         for i in range(len(service)):
             bookNo.services.add(service[i])
-            
+        
         bookNo.save()
         message="Booking Added."
         return render(request, 'makebookingmessage.html',{'message': message, })
@@ -321,7 +324,7 @@ def ViewRooms(request):
         else:
             status="classic"
         
-        return render(request, 'roomdetail.html',{'roomid': getroom.room_id,'capacity':getroom.capacity,'floor':getroom.floor, 'status':status})
+        return render(request, 'roomdetail.html',{'roomid': getroom.room_id,'capacity':getroom.capacity,'floor':getroom.floor, 'status':status, 'Price':getroom.price})
         
     else:
         rooms=Rooms.objects.all().values_list('room_id', flat=True)
@@ -335,8 +338,274 @@ def ViewServices(request):
         serviceid=request.POST.dict().get('service')
         getservice=Services.objects.get(pk=serviceid)
         
-        return render(request, 'servicedetail.html',{'id': getservice.service_id,'type':getservice.service_type,'desc':getservice.service_desc})
+        return render(request, 'servicedetail.html',{'id': getservice.service_id,'type':getservice.service_type,'desc':getservice.service_desc,'Price':getservice.price })
         
     else:
         services=Services.objects.all().values_list('service_id', flat=True)
         return render(request, 'viewservices.html',{'Services': services})
+    
+def ViewBookings(request):
+    if not request.session.get('id'):
+        return redirect('login')
+    
+    if request.POST:
+        VB=request.POST.dict().get('VB')
+        UB=request.POST.dict().get('UB')
+        DB=request.POST.dict().get('DB')
+        MP=request.POST.dict().get('MP')
+        UBA=request.POST.dict().get('UBA')
+        Search=request.POST.dict().get('Search')
+        MC=request.POST.dict().get('MC')
+        DropB=request.POST.dict().get('DropB')
+        
+        print('Hello' + str(MC))
+        if Search:
+            opt=request.POST.dict().get('Option')
+            text=request.POST.dict().get('SearchText')
+            message=""
+            if opt=='SBN':  ##Search BY Name
+                bookings=Booking.objects.filter(name__contains=text).filter(isActive=True)
+                if len(bookings)<1:
+                    message="No Match Found"
+            elif opt=='SBD': ##Search BY Date
+                if len(text)==10:
+                    bookings=Booking.objects.filter(checkin=text).filter(isActive=True)
+                    if len(bookings)<1:
+                        message="No Match Found"
+                else:
+                    message="Invalid Date Format. Format Must be (YYYY-MM-DD)" 
+            if message:
+                return render(request, 'makebookingmessage.html',{'message': message })
+            else:
+                bookings=bookings.values_list('id', flat=True)
+                return render(request, 'viewbookings.html',{'bookings': bookings, 'Searched':"True", 'Query': text})
+        elif DropB:
+            booking=Booking.objects.get(pk=DropB)
+            booking.checkout=date.today()
+            booking.isActive=False
+            if booking.payment:
+                payment=Payment.objects.get(pk=booking.payment.id)
+                payment.delete()
+            booking.payment=None
+            booking.save()
+            message="Booking Droped." 
+            return render(request, 'makebookingmessage.html',{'message': message })
+        elif MC:
+            booking=Booking.objects.get(pk=MC)
+            booking.checkout=date.today()
+            booking.isActive=False
+            booking.save()
+            message="Marked Check-out" 
+            return render(request, 'makebookingmessage.html',{'message': message })
+        elif UBA:
+            print(UBA)
+            booking=Booking.objects.get(pk=UBA)
+            book=request.POST.dict()
+            _name=book.get('name')
+            _date=book.get('checkin')
+            _cnic=book.get('cnic')
+            _phone=book.get('phone')
+            _email=book.get('email')
+            _desc=book.get('desc')
+            _rooms=request.POST.getlist('Room')
+            _services=request.POST.getlist('Service')
+            
+            ###Delete Rooms
+            frooms=Rooms.objects.filter(booking=booking.id)
+            for room in frooms:
+                room.booking=None
+                room.save()    
+            #### Delete Services
+            booking.services.clear()
+            booking.services.all()                  
+            #### Update
+            booking.name=_name
+            booking.checkin=_date
+            booking.cnic=_cnic
+            booking.phone=_phone
+            booking.email=_email
+            booking.desc=_desc
+            print(_services)
+            print(_rooms)
+            for service in _services:
+                booking.services.add(service)
+            for i in range(len(_rooms)):
+                room=Rooms.objects.get(pk=_rooms[i])
+                room.booking=booking
+                room.save()
+            booking.save()
+            message="Booking Updated."
+            return render(request, 'makebookingmessage.html',{'message': message })
+                
+        
+        elif MP:
+            booking=Booking.objects.get(pk=MP)
+            if date.today()>booking.checkin:
+                NumberOfDays=date.today()-booking.checkin
+                NumberOfDays=int(NumberOfDays.days+1)
+            else:
+                NumberOfDays=1
+            
+            ###Calculate Subtotal and Tax and Total
+            subtotal=0
+            rooms= Rooms.objects.filter(booking=booking.id)
+            for room in rooms:
+                subtotal+=float(room.price)*NumberOfDays
+            for service in booking.services.all():
+                subtotal+=float(service.price)
+            tax=int(subtotal*0.14)
+            total=subtotal+tax
+            booking.totalAmount=total
+            booking.save()
+            return render(request, 'paymentdetail.html',{'Days': NumberOfDays, 'Booking':booking, 'Rooms': rooms, 'Services':booking.services.all(),
+                                                          'Subtotal':subtotal,
+                                                         'Tax':tax, 'Total':total})
+        elif VB:
+            booking=Booking.objects.get(pk=VB)
+            rooms= Rooms.objects.filter(booking=booking.id)         
+            services=booking.services.all()
+            return render(request, 'bookdetail.html',{'booking': booking, 'rooms': rooms, 'services':services })
+        elif UB:
+            booking=Booking.objects.get(pk=UB)
+            rooms= Rooms.objects.filter(booking=None ) | Rooms.objects.filter(booking=booking)
+            roomsall=rooms.values_list('room_id', flat=True)         
+            servicesall=Services.objects.all().values_list('service_id', flat=True) 
+            
+            rooms=Rooms.objects.filter(booking=booking ).values_list('room_id', flat=True)
+            services=booking.services.all().values_list('service_id', flat=True) 
+            return render(request, 'updatebooking.html',{'booking': booking, 'Rooms': rooms, 'Services':services,
+                                                          'RoomsAll':roomsall, 'ServicesAll':servicesall})
+            
+        elif DB:
+            booking=Booking.objects.get(pk=DB)
+            rooms= Rooms.objects.filter(booking= booking.id).booking=None
+            
+            Booking.objects.filter(id=booking.id).delete()
+            message="Booking Deleted."
+            return render(request, 'makebookingmessage.html',{'message': message })
+            
+  
+                
+        return render(request, 'servicedetail.html',{'id': getservice.service_id,'type':getservice.service_type,'desc':getservice.service_desc})
+        
+    else:
+        bookings=Booking.objects.filter(isActive=True).values_list('id', flat=True)
+        return render(request, 'viewbookings.html',{'bookings': bookings})
+    
+def _Payment(request):
+    if not request.session.get('id'):
+        return redirect('login')
+    
+    if request.POST:
+        PTCard=request.POST.dict().get('PTCard')
+        PTCash=request.POST.dict().get('PTCash')
+        CardPayment=request.POST.dict().get('CardPayment')
+        
+        if PTCard:
+            booking=Booking.objects.get(pk=PTCard)
+            
+            if booking.payment:
+                message="Already Paid."
+                return render(request, 'makebookingmessage.html',{'message': message })
+            
+            return  render(request, 'paybycard.html',{'booking': booking})
+        elif CardPayment:
+            name=request.POST.dict().get('name')
+            email=request.POST.dict().get('email')
+            address=request.POST.dict().get('address')
+            city=request.POST.dict().get('city')
+            country=request.POST.dict().get('country')
+            zipcode=request.POST.dict().get('zip')
+            cardname=request.POST.dict().get('cardname')
+            cardnumber=request.POST.dict().get('cardnumber')
+            expmonth=request.POST.dict().get('expmonth')
+            expyear=request.POST.dict().get('expyear')
+            
+            ##Making PayByCard Instance
+            obj=PayByCard(name=name, email=email, address=address, city=city, 
+                          country=country, zipcode=zipcode, nameOnCard=cardname,
+                          cardNo=cardnumber, expMonth=expmonth, expYear=expyear)
+            obj.save()
+            
+            ##Making Payment Instance
+            booking=Booking.objects.get(pk=CardPayment)
+            obj1=Payment(totalAmount=booking.totalAmount, paidAmount=booking.totalAmount,
+                         date=date.today(), PayByCard=obj)
+            obj1.save()
+            booking.payment=obj1
+            booking.save()
+            
+            message="Payment Successful."
+            return render(request, 'makebookingmessage.html',{'message': message })
+        
+        elif PTCash:
+            booking=Booking.objects.get(pk=PTCash)
+            if booking.payment:
+                message="Already Paid."
+                return render(request, 'makebookingmessage.html',{'message': message })
+            
+            
+            Amount=request.POST.dict().get('Amount')   
+            obj1=Payment(totalAmount=booking.totalAmount, paidAmount=Amount,
+                         date=date.today(), PayByCard=None)
+            obj1.save()
+            booking.payment=obj1
+            booking.save()
+            message="Payment Successful."
+            return render(request, 'makebookingmessage.html',{'message': message })
+        
+    else:
+        return redirect('viewbookings')
+    
+def BookingReport(request):
+    
+    if not request.session.get('id'):
+        return redirect('login')
+    
+    if request.POST:
+        SD=request.POST.dict().get('SD')
+        ED=request.POST.dict().get('ED')
+        
+        booking=Booking.objects.filter(checkin__gte=SD).filter(checkin__lte=ED)
+        active=0
+        drop=0
+        finish=0
+        for b in booking:
+            if b.isActive:
+                active+=1
+            elif not b.isActive and b.payment:
+                finish+=1
+            elif not b.isActive and not b.payment:
+                drop+=1
+                
+        total=active+finish+drop
+                
+        return render(request, 'bookingreport.html',{'bookings': booking, 'total':total, 'finish':finish, 'drop':drop,'active':active,
+                                                     'date':date.today()})
+    
+    return render(request, 'bookingreport.html')
+
+def FinanceReport(request):
+    if not request.session.get('id'):
+        return redirect('login')
+    
+    if request.POST:
+        SD=request.POST.dict().get('SD')
+        ED=request.POST.dict().get('ED')
+        
+        booking=Booking.objects.filter(checkin__gte=SD).filter(checkin__lte=ED)
+        total=0
+        earning=0
+        loss=0
+        for b in booking:
+            total+=b.totalAmount
+            if b.payment:
+                earning+=b.payment.paidAmount
+        
+        loss=total-earning
+                
+        return render(request, 'financereport.html',{'bookings': booking, 'total':total, 'earning':earning, 'loss':loss,
+                                                     'date':date.today()})
+        
+    return render(request, 'financereport.html')
+   

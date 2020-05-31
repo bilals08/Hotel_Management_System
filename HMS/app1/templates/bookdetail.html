@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html >
+
+<head>
+	<link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
+	<link type="text/css" rel="stylesheet" href="{% static 'bootstrap.min.css' %}" />
+	<link type="text/css" rel="stylesheet" href="{% static 'sbstyle.css' %}" />
+</head>
+
+<body>
+	<div id="booking" class="section">
+		<div class="section-center">
+			<div class="container">
+				<div class="row">
+					<div class="booking-form">
+						
+						<div class="form-header">
+							<h1>Booking Details </h1>
+						</div>
+						  
+						<div>
+						<p class="alignright">Check-In Date : {{booking.checkin}} </p><br><br>
+
+						<p class="alignleft">Booking ID: {{booking.id}} <br><br> Customer Name: {{booking.name}} <br><br>
+							Customer's E-mail: {{booking.email}} <br><br>Customer CNIC : {{booking.cnic}} 
+							 <br><br> Customer Contact: {{booking.phone}}  <br><br> Booking Description: {{booking.desc}} <br><br>
+							Rooms Allocated: 
+							{% for room in rooms %}
+								{{ room.room_id }}, 
+							{% endfor %} 
+							<br><br>
+							Services Allocated:
+							{% for service in services%}
+								{{service.service_id}},
+							{% endfor %} 
+								
+							<br><br>
+							Booking Active: {{booking.isActive}}<br><br>
+							Booking Paid: {% if booking.payment%}True{%else%}False{% endif %}
+						<br><br><br> 
+						</p> </div>
+
+						
+						<div  >
+						
+						<button class="submit-btn" ><a href="{% url 'viewbookings' %}">Back</a></button><br><br><br>
+						
+						</div>
+						
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
+
+</body>
+	<script>
+	function goback()
+	{
+	location.replace("showallbookings.html")
+	}
+	</script>
+
+</html>

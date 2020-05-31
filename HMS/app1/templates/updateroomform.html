@@ -12,10 +12,10 @@
   <form method="POST" action="updateroom">
     {% csrf_token %}
     <label for="Rno">Room No</label><br>
-    <input type="text" id="Rno" name="RoomNo" placeholder="Enter Room No"><br>
+    <input type="text" id="Rno" name="RoomNo" placeholder="Enter Room No" minlength="2" maxlength="10" required><br>
 
     <label for="capacity">Capacity</label><br>
-    <input type="number" id="capacity" name="Capacity" placeholder="No of people"><br>
+    <input type="number" id="capacity" name="Capacity" placeholder="No of people" min="1" max="6" required><br>
 
     <label for="Floor No">Floor No</label><br>
     <select id="Floor No" name="FloorNo">

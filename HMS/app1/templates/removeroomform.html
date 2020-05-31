@@ -11,7 +11,7 @@
   <form method="POST" action="removeroom">
     {% csrf_token %}
     <label for="Rno">Room No</label><br>
-    <input type="text" id="Rno" name="RoomNo" placeholder="Enter Room No"><br>
+    <input type="text" id="Rno" name="RoomNo" placeholder="Enter Room No" minlength="2" maxlength="10" required><br>
   
     <h2 ><i> {{message}} </i></h2> 
     <input type="submit" value="Submit">

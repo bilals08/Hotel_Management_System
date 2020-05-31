@@ -1,0 +1,174 @@
+{% load static %}
+<!DOCTYPE html>
+<html >
+
+<head>	
+	<meta charset="UTF-8">
+	<link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
+	<link type="text/css" rel="stylesheet" href="{% static 'bootstrap.min.css' %}" />
+	<link type="text/css" rel="stylesheet" href="{% static 'reciept.css' %}" />
+</head>
+
+<body>
+	<div class="container">
+    <div class="row">
+        <div class="well col-xs-10 col-sm-10 col-md-6 col-xs-offset-1 col-sm-offset-1 col-md-offset-3">
+            <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-6">
+                    <address>
+                        <strong>Dream Residencia</strong>
+                        <br>
+                        A.K. Brohi Road
+                        <br>
+                        Islamabad, Pakistan
+                        <br>
+                        Phone:090078601
+                    </address>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+                    <p>
+                        <em>Date: 1st April, 2020</em>
+                    </p>
+                    <p>
+                        <em>Receipt #: 1</em>
+                    </p>
+                </div>
+            </div>
+			
+            <div class="row">
+                <div class="text-center">
+                    <h1>Receipt</h1>
+                </div>
+                
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>#</th>
+                            <th class="text-center">Price</th>
+                            <th class="text-center">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        {% for room in Rooms %}
+                        <tr>
+                            <td class="col-md-9"><em>Room {{room.room_id}}</em></h4></td>
+                            <td class="col-md-1" style="text-align: center"> {{Days}} </td>
+                            <td class="col-md-1 text-center">Rs. {{room.price}}</td>
+                            <td class="col-md-1 text-center">Rs. {% widthratio room.price 1 Days %}</td>
+                        </tr>
+                        {% endfor %}
+                        
+                        {% for service in Services %}
+                        <tr>
+                            <td class="col-md-9"><em>Service {{service.service_id}}</em></h4></td>
+                            <td class="col-md-1" style="text-align: center"> {{1}} </td>
+                            <td class="col-md-1 text-center">Rs. {{service.price}}</td>
+                            <td class="col-md-1 text-center">Rs. {{service.price}} </td>
+                        </tr>
+						{% endfor %}
+                        
+                       
+                        <tr>
+                            <td>   </td>
+                            <td>   </td>
+                            <td class="text-right">
+                            <p>
+                                Subtotal: 
+                            </p>
+                            <p>
+                                Tax:
+                            </p></td>
+                            <td class="text-center">
+                            <p>
+                                <strong>{{Subtotal}}</strong>
+                            </p>
+                            <p>
+                                <strong>{{Tax}}</strong>
+                            </p></td>
+                        </tr>
+                        <tr>
+                            <td>  </td>
+                            <td>   </td>
+                            <td class="text-right"><h4>Total:</h4></td>
+                            <td class="text-center text-danger"><h4><strong>{{Total}}</strong></h4></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- <form method="POST" action="{% url 'payment' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="pay-btn" name="id" value="{{Booking}}">
+                        Pay Now   
+                    </button>
+                </form> -->
+
+                <button type="button" class="pay-btn" onclick="openForm()">
+                    Pay Now   
+                </button>
+               <button class="pay-btn1"> <a href="{% url 'viewbookings' %}"> Back </a></button>
+                <!-- <button type="button" class="pay-btn" onclick=pay()>
+                    Pay Now   
+                </button> -->
+				<!-- <button type="button" class="pay-btn1" onclick=goback() >
+                    Back   
+                </button> -->
+                <form method="POST" action="{% url 'payment' %}">
+                    {% csrf_token %}
+                
+                <div class="form-popup" id="myForm">
+                <br><br>
+                <button type="submit" class="btn" name="PTCard" value="{{Booking.id}}">Pay Through Card</button><br><br>
+                <button type="button" class="btn" onclick="openForm1()">Pay Through Cash</button><br><br>
+                <button type="button" class="btn" onclick="closeForm()">Close</button>
+                <br><br>
+                </div>
+                </form>
+
+                <form method="POST" action="{% url 'payment' %}">
+                    {% csrf_token %}
+                
+                <div class="form-popup" id="myForm1">
+                    <br><br>
+                    <label for="Amount"><b>Enter Amount</b></label><br>
+                    <input type="Number" placeholder="Enter Amount.." name="Amount" step="0.01" min="0" max="9999999" required>
+        
+                    <br><br>
+                <button type="submit" class="btn" name="PTCash" value="{{Booking.id}}">Enter</button><br><br>
+                <button type="button" class="btn" onclick="closeForm1()">Close</button>
+                <br><br>
+                </div>
+
+            </form>
+                    
+                           
+
+            </div>
+
+        </div>
+    </div>
+
+</body>
+	<script>
+
+    function openForm() {
+	    document.getElementById("myForm").style.display = "block";
+	}
+    
+    function openForm1() {
+    closeForm();
+	document.getElementById("myForm1").style.display = "block";
+	
+	}
+    function closeForm() {
+        document.getElementById("myForm").style.display = "none";
+    }
+    function closeForm1() {
+        openForm();
+        document.getElementById("myForm1").style.display = "none";
+    }
+	
+	</script>
+
+</html>

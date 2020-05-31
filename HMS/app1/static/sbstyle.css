@@ -1,6 +1,6 @@
-.section {
+body{
 	position: relative;
-	height: 200vh;
+	height: 120vh;
 	background-image: url('/static/images/book3.jpeg');
 	background-position:center;
 	
@@ -76,68 +76,24 @@
 	transition: 0.2s;
 }
 
-.booking-form .form-control::-webkit-input-placeholder {
-	color: rgba(255, 255, 255, 1);
-}
+.booking-form .alignleft {
+float:left;
+font-size:18px;
+font-weight: bold;
 
-.booking-form .form-control:-ms-input-placeholder {
-	color: rgba(255, 255, 255, 1);
-}
-
-.booking-form .form-control::placeholder {
-	color: rgba(255, 255, 255, 1);
 }
 
 
+.booking-form .alignright {
+float: right;
+font-size:18px;
+font-weight: bold;
 
-.booking-form input[type="date"].form-control {
-	padding-top: 16px;
 }
 
-.booking-form input[type="date"].form-control:invalid {
-	color: rgba(255, 255, 255, 1);
-}
 
-.booking-form input[type="date"].form-control+.form-label {
-	opacity: 1;
-	top: 10px;
-}
 
-.booking-form select.form-control {
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	appearance: none;
-}
 
-.booking-form select.form-control:invalid {
-	color: rgba(255, 255, 255, 1);
-}
-
-.booking-form select.form-control+.select-arrow {
-	position: absolute;
-	right: 15px;
-	top: 50%;
-	-webkit-transform: translateY(-50%);
-	transform: translateY(-50%);
-	width: 32px;
-	line-height: 32px;
-	height: 32px;
-	text-align: center;
-	pointer-events: none;
-	color: rgba(255, 255, 255, 0.5);
-	font-size: 14px;
-}
-
-.booking-form select.form-control+.select-arrow:after {
-	content: '\279C';
-	display: block;
-	-webkit-transform: rotate(90deg);
-	transform: rotate(90deg);
-}
-
-.booking-form select.form-control option {
-	color: #000;
-}
 
 .booking-form .form-label {
 	position: absolute;
@@ -170,7 +126,7 @@
 	font-weight: 700;
 	height: 60px;
 	padding: 10px 30px;
-	width: 100%;
+	width: 30%;
 	border-radius: 40px;
 	border: none;
 	text-transform: uppercase;
@@ -178,6 +134,12 @@
 	letter-spacing: 1.3px;
 	-webkit-transition: 0.2s all;
 	transition: 0.2s all;
+	
+	position:absolute;
+	bottom :20px;
+	right : 20px;
+	
+   
 }
 
 

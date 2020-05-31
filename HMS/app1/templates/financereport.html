@@ -1,0 +1,172 @@
+{% load static %}
+<!DOCTYPE html>
+<html >
+
+<head>
+	
+	
+
+	
+	<meta charset="UTF-8">
+	<link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="{% static 'bootstrap.min.css' %}" />
+    <link type="text/css" rel="stylesheet" href="{% static 'reports.css' %}" />
+
+
+</head>
+
+<body>
+	<div class="container">
+    <div class="row1">
+        <div class="well col-xs12 col-sm-12 col-md12 col-xs-offset-1 col-sm-offset-1 col-md-offset-0">
+            <div class="row">
+                <div class="col-xs-3 col-sm-3 col-md-3">
+                    <address>
+                        <strong>Dream Residencia</strong>
+                        <br>
+                        A.K. Brohi Road
+                        <br>
+                        Islamabad, Pakistan
+                        <br>
+                        Phone:090078601
+                    </address>
+                </div>
+                <div class="col-xs-3 col-sm-3 col-md-9 text-right">
+                    <p>
+                        <em>Date: {{date}}</em>
+                    </p>
+                    
+                </div>
+            </div>
+			
+            <div class="row">
+                <div class="text-center">
+                    <h1>Finance Report</h1>
+                </div>
+                
+                <form method="POST">
+                    {% csrf_token%}
+                <table >
+                    <tr>
+                        <td><h2  style="width:300px; padding:5px; margin-right: 5px;"> Date From</h2><td>
+                        <td><h2  style="width:300px; padding:5px; margin-right: 5px;">Date To</h2><td>   
+                      
+                        
+                    </tr>
+                    <tr>
+                        <td><input type="date" name="SD" style="width:300px; padding:5px; margin-right: 5px;" placeholder="Start Date"  min="2015-01-01" required><td>
+                        <td><input type="date" name="ED" style="width:300px; padding:5px; margin-right: 5px;" placeholder="End Date" max="2090-01-01" required><td>
+                        <td> <input type="submit"  name="Search" placeholder="Search" style="width:100px; padding:5px;  background-color:rgb(255,127,80); color:cornsilk; "></td>
+                    </tr>
+                </table>
+                </form> <br><br>
+
+                {% for booking in bookings %}
+                {% if forloop.first %}
+                <table class="c">
+                    <thead>
+                        <tr>
+                            
+                            <th width="25%" style="text-align: center">Name </th>
+							<th width="15%" style="text-align: center">Check-IN</th>
+							<th width="20%" style="text-align: center">Check-OUT</th>
+							<th width="30%" style="text-align: center">Total Amount</th>
+							<th width="20%" style="text-align: center">Paid Amount</th>
+                            <th width="10%" style="text-align: center">Status</th>
+                            
+                            
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% endif %}
+                        <tr>
+                            
+                            <td class="col-md-1" style="text-align: center">{{booking.name}} </td>
+                            <td class="col-md-1 text-center">{{booking.checkin}}</td>
+                            <td class="col-md-1 text-center">{{booking.checkout}}</td>
+                            <td class="col-md-1 text-center">{{booking.totalAmount}}</td>
+                            {% if booking.payment %}
+                            <td class="col-md-1 text-center">{{booking.payment.paidAmount}}</td>
+                            {% else %}
+                            <td class="col-md-1 text-center">-</td>
+                            {% endif %}
+							
+                            
+                            {% if booking.isActive %}
+                            <td class="col-md-1 text-center">Active</td>
+                            {% elif not booking.isActive and booking.payment%}
+                            <td class="col-md-1 text-center">Finished</td>
+                            {% elif not booking.isActive and not booking.payment%}
+                            <td class="col-md-1 text-center">Dropped</td>
+                            {%else%}
+                            <td class="col-md-1 text-center">-</td>
+                            {% endif %}	
+                            
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
+                
+				
+				
+						
+            </div>
+			<div class="row">
+                <div class="text-center" >
+                    <h1 class="h12">Finance Analysis</h1>
+                </div><br><br>
+                
+                <table class="d">
+                    
+                    <tbody>
+                        <tr>
+                            
+                            <td class="col-md-1" style="text-align: center"> Total Amount: Rs. {{total}}</td>
+							
+						</tr>
+						<tr>
+                            
+                            <td class="col-xs-1" style="text-align: center"> Total Earnings: Rs. {{earning}} </td>
+						</tr>
+						<tr>
+                            
+                            <td class="col-md-1" style="text-align: center"> Loss: Rs. {{loss}} </td>
+						</tr>
+						
+                        
+						
+							
+                        
+						
+						
+                        
+                        
+                        
+                    </tbody><br><br>
+					
+                </table>
+                
+				
+				
+						
+            </div>
+			<button type="button" class="pay-btn" >
+                <a href="{% url 'home' %}">Back To Home</a>  
+                </button>
+			
+        </div>
+    </div>
+	</div>
+
+</body>
+	<script>
+	function goback()
+	{
+	location.replace("showsinglebooking.html")
+	}
+	
+	</script>
+
+</html>

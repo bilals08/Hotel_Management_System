@@ -37,14 +37,14 @@
 				{% csrf_token %}
 				
 				<input type="text" class="input-field" placeholder="User ID" name="signup_id"
-				required>
+				minlength="4" maxlength="64" required>
 				<input type="text" class="input-field" placeholder="Enter Password" name="signup_pass"
-				required>
+				minlength="6" maxlength="64" required>
 				<input type="email" class="input-field" placeholder="Email ID(Optional)" name="signup_email"
 				> 
 
 				<input type="number" class="input-field" placeholder="Phone No" name="signup_contact"
-				required> 
+				minlength="10" maxlength="13" required> 
 
 				<input type="checkbox" class="check-box" name="terms"><span>I agree to the terms. </span>
 				<button type="submit" class= "submit-button">Sign up </button>
@@ -54,14 +54,14 @@
 				{% csrf_token %}
 				
 				<input type="text" class="input-field" placeholder="User ID" name="signup_id"
-				required>
+				minlength="4" required>
 				<input type="text" class="input-field" placeholder="Enter Password" name="signup_pass"
-				required>
+				minlength="6" required>
 				<input type="email" class="input-field" placeholder="Email ID" name="signup_email"
 				required> 
 
 				<input type="number" class="input-field" placeholder="Phone No(optional)" name="signup_contact"
-				> 
+				minlength="10" maxlength="13" > 
 
 				<input type="checkbox" class="check-box" name="terms"><span>I agree to the terms. </span>
 				<button type="submit" class= "submit-button">Sign up </button>

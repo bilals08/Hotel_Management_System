@@ -23,19 +23,19 @@
 						<form method="POST">
 							{% csrf_token %}
 							<div class="form-group">
-								<input class="form-control" type="text" placeholder="Customer Name" name="name" required>
+								<input class="form-control" type="text" placeholder="Customer Name" name="name"  minlength="2" maxlength="30" required >
 							</div>
 							
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
-										<input class="form-control" type="date" name="checkin" required>
+										<input class="form-control" type="date" name="checkin" min="2015-01-01" max="2090-01-01" required>
 										<span class="form-label">Check In</span>
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="form-group">
-										<input class="form-control" type="text" name="cnic" placeholder="Enter your CNIC">
+										<input class="form-control" type="text" name="cnic" placeholder="Enter your CNIC" minlength="13" maxlength="15">
 										<span class="form-label">Cnic</span>
 									</div>
 								</div>
@@ -44,13 +44,13 @@
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
-										<input class="form-control" type="email" name="email" placeholder="Enter your Email">
+										<input class="form-control" type="email" name="email" placeholder="Enter your Email" minlength="5" >
 										<span class="form-label">Email</span>
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="form-group">
-										<input class="form-control" type="tel" name="phone" placeholder="Enter you Phone" required>
+										<input class="form-control" type="tel" name="phone" placeholder="Enter you Phone" minlength="11" maxlength="30" required>
 										<span class="form-label">Phone</span>
 									</div>
 								</div>
@@ -65,7 +65,7 @@
 								<button class="submit-btn"type="submit"> Book Now</button>
 							</div>
 						</form>
-						<br><button class="submit-btn"type="button"><a href="{% url 'home' %}">Back To Home</a></button>
+						<br><button class="submit-btn"type="button"><a href="{% url 'viewbookings' %}">Back</a></button>
 					</div>
 				</div>
 			</div>

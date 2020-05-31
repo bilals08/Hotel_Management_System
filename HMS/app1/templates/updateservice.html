@@ -11,7 +11,7 @@
   <form method='POST'>
     {% csrf_token %}
      <label for="Sno">Service Id</label><br>
-    <input type="text" id="Sno" name="serviceId" placeholder="Enter Service ID"><br>
+    <input type="text" id="Sno" name="serviceId" placeholder="Enter Service ID" minlength="2" maxlength="10" required><br>
 	
     <label for="Service Type">Select Service Type</label><br>
     <select id="service type" name="serviceType">
